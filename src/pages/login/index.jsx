@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Login from "@/components/Login";
 
-const login = () => {
+const LoginPage = () => {
     return (
         <div>
             <Header />
@@ -10,4 +10,4 @@ const login = () => {
     )
 }
 
-export default login
+export default LoginPage;

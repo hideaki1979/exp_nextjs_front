@@ -1,12 +1,12 @@
 .form {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 500px;
-  height: 500px;
-  margin: auto;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(500px, 90%);
+  height: auto;
+  min-height: 90vh;
+  padding: 40px 24px;
 
   &__title {
     font-size: 20px;
@@ -39,7 +39,6 @@
     height: 45px;
     border: none;
     margin: 30px auto 0;
-    display: block;
     font-size: 16px;
     background: #000;
     border-radius: 5px;
