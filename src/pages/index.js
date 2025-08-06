@@ -2,6 +2,9 @@ import Head from "next/head";
 // import styles from "@/styles/Home.module.css";
 import styles from "@/styles/style.module.scss"
 import Header from "@/components/Header";
+import Timeline from "@/components/Timeline";
+import Post from "@/components/Post";
+import { mockData } from "@/mock/data";
 
 
 export default function Home() {
@@ -15,6 +18,19 @@ export default function Home() {
       </Head>
       <main className={styles.container}>
         <Header />
+        <Timeline />
+
+        <div>
+          {mockData && mockData.map((item) => (
+            <Post
+              key={item.id}
+              name={item.name}
+              date={item.date}
+              content={item.content}
+              link={item.link}
+            />
+          ))}
+        </div>
       </main>
     </>
   );

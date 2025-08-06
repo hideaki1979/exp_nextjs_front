@@ -3,12 +3,12 @@ import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
-
-
-const Login = () => {
+const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
+            name: "",
             email: "",
             password: ""
         }
@@ -22,8 +22,24 @@ const Login = () => {
         <main className={styles.form}>
             <form onSubmit={handleSubmit(handleOnSubmit)}>
 
-                <h3 className={styles.form__title}>ログイン</h3>
+                <h3 className={styles.form__title}>アカウントを作成</h3>
 
+                <div className={styles.form__item}>
+                    <label htmlFor="name">
+                        <EmailIcon sx={{ color: "gray" }} />
+                        お名前
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="お名前を入力してください"
+                        id="name"
+                        name="name"
+                        {...register("name", {
+                            required: "名前は必須です"
+                        })}
+                    />
+                    {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
+                </div>
                 <div className={styles.form__item}>
                     <label htmlFor="email">
                         <EmailIcon sx={{ color: "gray" }} />
@@ -63,11 +79,11 @@ const Login = () => {
                 </div>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
-                    ログイン
+                    アカウント登録
                 </button>
             </form>
         </main>
     )
 }
 
-export default Login
+export default Signup
