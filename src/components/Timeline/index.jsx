@@ -24,9 +24,10 @@ const Timeline = () => {
                         required: "本文は必須です"
                     })}
                 >
-
                 </textarea>
+                {errors.password && <p className={globalStyles.form__error}>{errors.password.message}</p>}
                 <Button
+                    type="submit"
                     size="large"
                     variant="outlined"
                     color="success"

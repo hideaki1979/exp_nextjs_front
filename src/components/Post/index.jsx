@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
 import styles from "./style.module.scss";
+import Link from "next/link";
 
 const Post = ({ name, date, content, link }) => {
     return (
@@ -8,7 +8,7 @@ const Post = ({ name, date, content, link }) => {
             <p>{date}</p>
             <p>{content}</p>
 
-            <p className={styles.link}>{link}</p>
+            <Link href={link} className={styles.link}>{link}</Link>
         </div>
     )
 }

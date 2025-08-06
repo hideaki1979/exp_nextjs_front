@@ -1,9 +1,10 @@
 import styles from "./style.module.scss";
+import globalStyles from "../../styles/style.module.scss"
 import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
+import PersonIcon from '@mui/icons-material/Person';
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -26,7 +27,7 @@ const Signup = () => {
 
                 <div className={styles.form__item}>
                     <label htmlFor="name">
-                        <EmailIcon sx={{ color: "gray" }} />
+                        <PersonIcon sx={{ color: "gray" }} />
                         お名前
                     </label>
                     <input
@@ -38,7 +39,7 @@ const Signup = () => {
                             required: "名前は必須です"
                         })}
                     />
-                    {errors.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}
+                    {errors.name && <p className={globalStyles.form__error}>{errors.name.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="email">
@@ -58,7 +59,7 @@ const Signup = () => {
                             }
                         })}
                     />
-                    {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
+                    {errors.email && <p className={globalStyles.form__error}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="password">
@@ -75,7 +76,7 @@ const Signup = () => {
                             minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
                         })}
                     />
-                    {errors.password && <p style={{ color: 'red' }}>{errors.password.message}</p>}
+                    {errors.password && <p className={globalStyles.form__error}>{errors.password.message}</p>}
                 </div>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
