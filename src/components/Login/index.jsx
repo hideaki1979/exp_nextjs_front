@@ -43,7 +43,7 @@ const Login = () => {
                             }
                         })}
                     />
-                    {errors.email && <p className={globalStyles.form__error}>{errors.email.message}</p>}
+                    {errors.email && <p className={styles.form__error}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="password">
@@ -60,7 +60,7 @@ const Login = () => {
                             minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
                         })}
                     />
-                    {errors.password && <p className={globalStyles.form__error}>{errors.password.message}</p>}
+                    {errors.password && <p className={styles.form__error}>{errors.password.message}</p>}
                 </div>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />

@@ -25,7 +25,7 @@ const Timeline = () => {
                     })}
                 >
                 </textarea>
-                {errors.password && <p className={globalStyles.form__error}>{errors.password.message}</p>}
+                {errors.password && <p className={styles.form__error}>{errors.password.message}</p>}
                 <Button
                     type="submit"
                     size="large"

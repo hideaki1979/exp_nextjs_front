@@ -1,6 +1,8 @@
+@use "../../styles/style.module.scss" as *;
+
 .form {
   position: fixed;
-  top: 10vh;
+  top: calc(var(--header-height, 60px) + 1vh);
   left: 50%;
   transform: translateX(-50%);
   width: min(500px, 90%);
