@@ -1,0 +1,18 @@
+@use "../../styles/style.module.scss" as *;
+
+.timeline {
+  width: 100%;
+  margin: 30px auto;
+
+  textarea {
+    width: 100%;
+    height: 120px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    resize: none;
+    display: block;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+}

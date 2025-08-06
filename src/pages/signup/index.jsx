@@ -1,13 +1,13 @@
 import Header from "@/components/Header";
-import Login from "@/components/Login";
+import Signup from "@/components/Signup";
 
-const login = () => {
+const signup = () => {
     return (
         <div>
             <Header />
-            <Login />
+            <Signup />
         </div>
     )
 }
 
-export default login;
+export default signup;
