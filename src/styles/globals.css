@@ -1,3 +1,7 @@
+:root {
+  --header-height: 10vh;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
