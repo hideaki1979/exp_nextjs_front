@@ -4,6 +4,7 @@ import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -14,13 +15,32 @@ const Signup = () => {
         }
     });
 
+    const router = useRouter(); // next/routerの方はフロントでは動かない
+    // アカウント登録処理
+    const handleSignUp = async () => {
+        try {
+            const response = await apiClient.post("/api/auth/register", {
+                username,
+                email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
+                password
+            });
+            // ログイン成功後（乗車券が発行されたらページを移動させる）
+            setTimeout(() => {
+                router.push('/login');
+            }, 2000);
+        } catch (error) {
+            console.log("サインアップ処理失敗：", error);
+            alert("サインアップ処理に失敗しました。入力内容をご確認ください");
+        }
+    }
+
     const handleOnSubmit = (data) => {
         console.log(JSON.stringify(data, null, 2));
     }
 
     return (
         <main className={styles.form}>
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <form onSubmit={handleSubmit(handleSignUp)}>
                 <h3 className={styles.form__title}>アカウントを作成</h3>
                 <div className={styles.form__item}>
                     <label htmlFor="name">

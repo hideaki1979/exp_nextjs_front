@@ -1,13 +1,45 @@
 import Head from "next/head";
-// import styles from "@/styles/Home.module.css";
 import styles from "@/styles/style.module.scss"
 import Header from "@/components/Header";
 import Timeline from "@/components/Timeline";
 import Post from "@/components/Post";
 import { mockData } from "@/mock/data";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import apiClient from "@/lib/apiClient";
 
 
 export default function Home() {
+
+  // バックエンドから取得したデータを保持
+  const [posts, setPosts] = useState();
+  // 画面遷移で利用
+  const router = useRouter();
+
+  // ログインチェックのためのuseEffectを記述
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    // 現状はログイン画面に強制遷移だが、後でコメントアウトします。
+    // if(!token) {
+    //   router.push('/login');
+    //   return;
+    // }
+
+    const fetchPosts = async () => {
+      try {
+        const response = await apiClient.get("/api/posts");
+        console.log(response, 'response 取得チェック');
+        setPosts(response.data);
+      } catch (error) {
+        console.log("投稿取得処理に失敗しました", error)
+      }
+    };
+
+    // fetchPosts実行
+    fetchPosts();
+  }, []);
+
   return (
     <>
       <Head>

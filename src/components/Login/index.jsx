@@ -1,9 +1,10 @@
 import styles from "./style.module.scss";
-import globalStyles from "../../styles/style.module.scss"
 import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
 import { useForm } from "react-hook-form";
+import apiClient from "@/lib/apiClient";
+import { useRouter } from "next/navigation";
 
 
 
@@ -15,13 +16,31 @@ const Login = () => {
         }
     });
 
+    const router = useRouter(); // next/routerの方はフロントでは動かない
+    // ログイン処理
+    const handleLogin = async () => {
+        try {
+            const response = await apiClient.post("/api/auth/login", {
+                email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
+                password
+            });
+            // jwtトークンをlocalhostに保存（トークンというのは乗車チケットだと思ってください）
+            localStorage.setItem("token", response.data.token);
+            // ログイン成功後（乗車券が発行されたらページを移動させる）
+            router.push('/');
+        } catch (error) {
+            console.log("ログイン処理失敗：", error);
+            alert("ログイン処理に失敗しました。入力内容をご確認ください");
+        }
+    }
+
     const handleOnSubmit = (data) => {
         console.log(JSON.stringify(data, null, 2));
     }
 
     return (
         <main className={styles.form}>
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <form onSubmit={handleSubmit(handleLogin)}>
 
                 <h3 className={styles.form__title}>ログイン</h3>
 
