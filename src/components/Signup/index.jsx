@@ -61,6 +61,7 @@ const Signup = () => {
         } catch (error) {
             console.log("サインアップ処理失敗：", error);
             setApiResult("error");
+            setIsOpen(true);
         }
     }
 
@@ -122,10 +123,10 @@ const Signup = () => {
                     {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
                 <Collapse in={isOpen && apiResult === "error"} mountOnEnter unmountOnExit>
-                    <AlertMessage severity="error" message="ログイン処理でエラーが発生しました" />
+                    <AlertMessage severity="error" message="アカウント登録でエラーが発生しました" />
                 </Collapse>
                 <Collapse in={isOpen && apiResult === "success"} mountOnEnter unmountOnExit>
-                    <AlertMessage severity="success" message="ログイン処理でエラーが発生しました" />
+                    <AlertMessage severity="success" message="アカウント登録が成功しました" />
                 </Collapse>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />

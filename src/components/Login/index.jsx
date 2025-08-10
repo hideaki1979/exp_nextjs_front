@@ -60,7 +60,7 @@ const Login = () => {
         } catch (error) {
             console.log("ログイン処理失敗：", error);
             setApiResult("error");
-            setIsOpen(!isOpen);
+            setIsOpen(true);
         }
     }
 
@@ -111,7 +111,7 @@ const Login = () => {
                     <AlertMessage severity="error" message="ログイン処理でエラーが発生しました" />
                 </Collapse>
                 <Collapse in={isOpen && apiResult === "success"} mountOnEnter unmountOnExit>
-                    <AlertMessage severity="success" message="ログイン処理でエラーが発生しました" />
+                    <AlertMessage severity="success" message="ログイン処理が成功しました" />
                 </Collapse>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
