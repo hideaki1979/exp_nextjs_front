@@ -1,5 +1,3 @@
-@use "../../styles/style.module.scss" as *;
-
 .form {
   position: fixed;
   top: calc(var(--header-height, 60px) + 1vh);

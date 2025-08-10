@@ -1,10 +1,14 @@
 import styles from "./style.module.scss";
-import globalStyles from "../../styles/style.module.scss"
+import formStyles from "@/components/form.module.scss";
 import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
 import { useForm } from "react-hook-form";
-
+import apiClient from "@/lib/apiClient";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { AlertMessage } from "../Alert";
+import { Collapse } from "@mui/material";
 
 
 const Login = () => {
@@ -15,13 +19,54 @@ const Login = () => {
         }
     });
 
-    const handleOnSubmit = (data) => {
-        console.log(JSON.stringify(data, null, 2));
+    const [apiResult, setApiResult] = useState(""); // Alert表示用
+    const [isOpen, setIsOpen] = useState(false);
+
+    const router = useRouter(); // next/routerの方はフロントでは動かない
+
+    // 3秒後にアラートを非表示にする
+    useEffect(() => {
+        if (isOpen && apiResult === "error") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+        if (isOpen && apiResult === "success") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+    }, [isOpen, apiResult]);
+
+    // ログイン処理
+    const handleLogin = async (data) => {
+        const { email, password } = data;
+
+        try {
+            const response = await apiClient.post("/api/auth/login", {
+                email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
+                password
+            });
+            // jwtトークンをlocalhostに保存（トークンというのは乗車チケットだと思ってください）
+            localStorage.setItem("token", response.data.token);
+            // ログイン成功後（乗車券が発行されたらページを移動させる）
+            router.push('/');
+        } catch (error) {
+            console.log("ログイン処理失敗：", error);
+            setApiResult("error");
+            setIsOpen(true);
+        }
     }
 
     return (
         <main className={styles.form}>
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <form onSubmit={handleSubmit(handleLogin)}>
 
                 <h3 className={styles.form__title}>ログイン</h3>
 
@@ -43,7 +88,7 @@ const Login = () => {
                             }
                         })}
                     />
-                    {errors.email && <p className={styles.form__error}>{errors.email.message}</p>}
+                    {errors.email && <p className={formStyles.form__error}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="password">
@@ -60,8 +105,14 @@ const Login = () => {
                             minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
                         })}
                     />
-                    {errors.password && <p className={styles.form__error}>{errors.password.message}</p>}
+                    {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
+                <Collapse in={isOpen && apiResult === "error"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="error" message="ログイン処理でエラーが発生しました" />
+                </Collapse>
+                <Collapse in={isOpen && apiResult === "success"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="success" message="ログイン処理が成功しました" />
+                </Collapse>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
                     ログイン
