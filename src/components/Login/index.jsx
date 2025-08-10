@@ -1,4 +1,5 @@
 import styles from "./style.module.scss";
+import formStyles from "@/components/form.module.scss";
 import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
@@ -18,7 +19,8 @@ const Login = () => {
 
     const router = useRouter(); // next/routerの方はフロントでは動かない
     // ログイン処理
-    const handleLogin = async () => {
+    const handleLogin = async (data) => {
+        const {email, password} = data;
         try {
             const response = await apiClient.post("/api/auth/login", {
                 email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
@@ -32,10 +34,6 @@ const Login = () => {
             console.log("ログイン処理失敗：", error);
             alert("ログイン処理に失敗しました。入力内容をご確認ください");
         }
-    }
-
-    const handleOnSubmit = (data) => {
-        console.log(JSON.stringify(data, null, 2));
     }
 
     return (
@@ -62,7 +60,7 @@ const Login = () => {
                             }
                         })}
                     />
-                    {errors.email && <p className={styles.form__error}>{errors.email.message}</p>}
+                    {errors.email && <p className={formStyles.form__error}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="password">
@@ -79,7 +77,7 @@ const Login = () => {
                             minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
                         })}
                     />
-                    {errors.password && <p className={styles.form__error}>{errors.password.message}</p>}
+                    {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />

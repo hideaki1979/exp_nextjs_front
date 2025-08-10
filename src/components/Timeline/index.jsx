@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import styles from "./style.module.scss";
+import formStyles from "@/components/form.module.scss";
 import { useForm } from "react-hook-form";
 
 const Timeline = () => {
@@ -25,7 +26,7 @@ const Timeline = () => {
                     })}
                 >
                 </textarea>
-                {errors.content && <p className={styles.form__error}>{errors.content.message}</p>}
+                {errors.content && <p className={formStyles.form__error}>{errors.content.message}</p>}
                 <Button
                     type="submit"
                     size="large"

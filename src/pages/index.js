@@ -12,7 +12,7 @@ import apiClient from "@/lib/apiClient";
 export default function Home() {
 
   // バックエンドから取得したデータを保持
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
   // 画面遷移で利用
   const router = useRouter();
 

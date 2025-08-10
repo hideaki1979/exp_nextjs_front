@@ -1,10 +1,12 @@
 import styles from "./style.module.scss";
+import formStyles from "@/components/form.module.scss";
 import LoginIcon from '@mui/icons-material/Login';
 import PasswordIcon from '@mui/icons-material/Password';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import apiClient from "@/lib/apiClient";
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -17,10 +19,11 @@ const Signup = () => {
 
     const router = useRouter(); // next/routerの方はフロントでは動かない
     // アカウント登録処理
-    const handleSignUp = async () => {
+    const handleSignUp = async (data) => {
+        const {name, email, password} = data;
         try {
             const response = await apiClient.post("/api/auth/register", {
-                username,
+                username: name,
                 email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
                 password
             });
@@ -32,10 +35,6 @@ const Signup = () => {
             console.log("サインアップ処理失敗：", error);
             alert("サインアップ処理に失敗しました。入力内容をご確認ください");
         }
-    }
-
-    const handleOnSubmit = (data) => {
-        console.log(JSON.stringify(data, null, 2));
     }
 
     return (
@@ -56,7 +55,7 @@ const Signup = () => {
                             required: "名前は必須です"
                         })}
                     />
-                    {errors.name && <p className={styles.form__error}>{errors.name.message}</p>}
+                    {errors.name && <p className={sformStyles.form__error}>{errors.name.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="email">
@@ -76,7 +75,7 @@ const Signup = () => {
                             }
                         })}
                     />
-                    {errors.email && <p className={styles.form__error}>{errors.email.message}</p>}
+                    {errors.email && <p className={formStyles.form__error}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="password">
@@ -93,7 +92,7 @@ const Signup = () => {
                             minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
                         })}
                     />
-                    {errors.password && <p className={styles.form__error}>{errors.password.message}</p>}
+                    {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />

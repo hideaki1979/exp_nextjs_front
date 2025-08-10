@@ -28,10 +28,10 @@ const Header = () => {
             <ul>
                 <li>
                     {isAuth ? (
-                        <div onClick={logout}>
+                        <button type="button" className={styles.logoutButton} onClick={logout}  aria-label="ログアウト">
                             <LogoutIcon />
                             ログアウト
-                        </div>
+                        </button>
                     ) : (
                         <Link href="/login">
                             <AccessibilityIcon />
