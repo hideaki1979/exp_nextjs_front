@@ -6,7 +6,9 @@ import EmailIcon from '@mui/icons-material/Email';
 import { useForm } from "react-hook-form";
 import apiClient from "@/lib/apiClient";
 import { useRouter } from "next/navigation";
-
+import { useState, useEffect } from "react";
+import { AlertMessage } from "../Alert";
+import { Collapse } from "@mui/material";
 
 
 const Login = () => {
@@ -17,10 +19,35 @@ const Login = () => {
         }
     });
 
+    const [apiResult, setApiResult] = useState(""); // Alert表示用
+    const [isOpen, setIsOpen] = useState(false);
+
     const router = useRouter(); // next/routerの方はフロントでは動かない
+
+    // 3秒後にアラートを非表示にする
+    useEffect(() => {
+        if (isOpen && apiResult === "error") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+        if (isOpen && apiResult === "success") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+    }, [isOpen, apiResult]);
+
     // ログイン処理
     const handleLogin = async (data) => {
-        const {email, password} = data;
+        const { email, password } = data;
+
         try {
             const response = await apiClient.post("/api/auth/login", {
                 email,  // useStateで保持しているか、react-hook-formで保持しているかどちらかになります。
@@ -32,7 +59,8 @@ const Login = () => {
             router.push('/');
         } catch (error) {
             console.log("ログイン処理失敗：", error);
-            alert("ログイン処理に失敗しました。入力内容をご確認ください");
+            setApiResult("error");
+            setIsOpen(!isOpen);
         }
     }
 
@@ -79,6 +107,12 @@ const Login = () => {
                     />
                     {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
+                <Collapse in={isOpen && apiResult === "error"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="error" message="ログイン処理でエラーが発生しました" />
+                </Collapse>
+                <Collapse in={isOpen && apiResult === "success"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="success" message="ログイン処理でエラーが発生しました" />
+                </Collapse>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
                     ログイン

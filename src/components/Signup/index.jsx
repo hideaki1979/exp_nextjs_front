@@ -7,6 +7,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import apiClient from "@/lib/apiClient";
+import { useState } from "react";
+import { AlertMessage } from "../Alert";
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -17,10 +19,34 @@ const Signup = () => {
         }
     });
 
+    const [apiResult, setApiResult] = useState(""); // Alert表示用
+    const [isOpen, setIsOpen] = useState(false);
+
     const router = useRouter(); // next/routerの方はフロントでは動かない
+
+    // 3秒後にアラートを非表示にする
+    useEffect(() => {
+        if (isOpen && apiResult === "error") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+        if (isOpen && apiResult === "success") {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setApiResult("");
+            }, 3000); // 3秒後に非表示
+
+            return () => clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+        }
+    }, [isOpen, apiResult]);
+
     // アカウント登録処理
     const handleSignUp = async (data) => {
-        const {name, email, password} = data;
+        const { name, email, password } = data;
         try {
             const response = await apiClient.post("/api/auth/register", {
                 username: name,
@@ -33,7 +59,7 @@ const Signup = () => {
             }, 2000);
         } catch (error) {
             console.log("サインアップ処理失敗：", error);
-            alert("サインアップ処理に失敗しました。入力内容をご確認ください");
+            setApiResult("error");
         }
     }
 
@@ -55,7 +81,7 @@ const Signup = () => {
                             required: "名前は必須です"
                         })}
                     />
-                    {errors.name && <p className={sformStyles.form__error}>{errors.name.message}</p>}
+                    {errors.name && <p className={formStyles.form__error}>{errors.name.message}</p>}
                 </div>
                 <div className={styles.form__item}>
                     <label htmlFor="email">
@@ -94,6 +120,12 @@ const Signup = () => {
                     />
                     {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
                 </div>
+                <Collapse in={isOpen && apiResult === "error"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="error" message="ログイン処理でエラーが発生しました" />
+                </Collapse>
+                <Collapse in={isOpen && apiResult === "success"} mountOnEnter unmountOnExit>
+                    <AlertMessage severity="success" message="ログイン処理でエラーが発生しました" />
+                </Collapse>
                 <button type="submit" className={styles.form__btn}>
                     <LoginIcon sx={{ color: "gray" }} />
                     アカウント登録
