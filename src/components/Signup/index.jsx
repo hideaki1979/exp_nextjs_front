@@ -7,8 +7,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import apiClient from "@/lib/apiClient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AlertMessage } from "../Alert";
+import { Collapse } from "@mui/material";
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
