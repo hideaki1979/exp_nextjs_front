@@ -1,14 +1,13 @@
 import styles from "./style.module.scss";
-import Link from "next/link";
 
-const Post = ({ name, date, content, link }) => {
+const Post = ({ content, createdAt, author }) => {
     return (
         <div className={styles.post}>
-            <p>{name}</p>
-            <p>{date}</p>
+            <p>{new Date(createdAt).toLocaleString()}</p>
             <p>{content}</p>
+            <p>{author.username}</p>
 
-            <Link href={link} className={styles.link}>{link}</Link>
+            {/* <Link href={link} className={styles.link}>{link}</Link> */}
         </div>
     )
 }

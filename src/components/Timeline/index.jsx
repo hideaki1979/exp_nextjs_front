@@ -1,32 +1,57 @@
 import { Button } from "@mui/material";
 import styles from "./style.module.scss";
 import formStyles from "@/components/form.module.scss";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import apiClient from "@/lib/apiClient";
 
-const Timeline = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-            content: ""
+const Timeline = ({ setPosts }) => {
+    const [content, setContent] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(1111);
+
+        if (!content.trim()) {
+            alert("投稿内容を入力してください");
+            return;
         }
-    });
 
-    const handleOnSubmit = (data) => {
-        console.log(JSON.stringify(data, null, 2));
-    }
+        try {
+            const token = localStorage.getItem("token");
+            // tokenをチェックし、ない人は投稿できないようにしているのでここで確認する🤗
+            if (!token) {
+                alert("ログインが必要です");
+                return;
+            }
+            const response = await apiClient.post(
+                "/api/post",
+                { content },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            setContent(""); // ✅ 投稿後にフォームをリセット
+            alert("投稿が完了しました！");
+
+            // ✅ 投稿後に `posts` の状態を更新
+            setPosts((prevPosts) => [response.data, ...prevPosts]);
+        } catch (error) {
+            console.error("投稿エラー:", error);
+            alert("投稿に失敗しました");
+        }
+    };
 
     return (
         <div className={styles.timeline}>
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <form onSubmit={handleSubmit}>
                 <textarea
                     name="content"
                     id="content"
                     placeholder="本文を入力してください"
-                    {...register("content", {
-                        required: "本文は必須です"
-                    })}
+                    onChange={(e) => setContent(e.target.value)}
                 >
                 </textarea>
-                {errors.content && <p className={formStyles.form__error}>{errors.content.message}</p>}
                 <Button
                     type="submit"
                     size="large"

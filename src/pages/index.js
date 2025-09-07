@@ -21,10 +21,10 @@ export default function Home() {
     const token = localStorage.getItem("token");
 
     // 現状はログイン画面に強制遷移だが、後でコメントアウトします。
-    // if(!token) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!token) {
+      router.push('/login');
+      return;
+    }
 
     const fetchPosts = async () => {
       try {
@@ -50,16 +50,15 @@ export default function Home() {
       </Head>
       <main className={styles.container}>
         <Header />
-        <Timeline />
+        <Timeline setPosts={setPosts} />
 
         <div>
-          {mockData && mockData.map((item) => (
+          {posts && posts.map((item, index) => (
             <Post
-              key={item.id}
-              name={item.name}
-              date={item.date}
+              key={index}
               content={item.content}
-              link={item.link}
+              createdAt={item.createdAt}
+              author={item.author}
             />
           ))}
         </div>
