@@ -48,12 +48,13 @@ const Timeline = ({ setPosts }) => {
                 <textarea
                     name="content"
                     id="content"
+                    value={content}
                     placeholder="本文を入力してください"
                     onChange={(e) => setContent(e.target.value)}
                 >
                 </textarea>
                 <Button
-                    type="submit"
+                    onClick={handleSubmit}
                     size="large"
                     variant="outlined"
                     color="success"
