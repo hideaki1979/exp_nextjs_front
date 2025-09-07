@@ -3,9 +3,9 @@ import styles from "./style.module.scss";
 const Post = ({ content, createdAt, author }) => {
     return (
         <div className={styles.post}>
-            <p>{new Date(createdAt).toLocaleString()}</p>
+            <p>{createdAt ? new Date(createdAt).toLocaleString("ja-JP") : "-"}</p>
             <p>{content}</p>
-            <p>{author.username}</p>
+            <p>{author ? author.username : "-"}</p>
 
             {/* <Link href={link} className={styles.link}>{link}</Link> */}
         </div>
