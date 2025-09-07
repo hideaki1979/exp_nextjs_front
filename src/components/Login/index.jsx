@@ -102,7 +102,7 @@ const Login = () => {
                         name="password"
                         {...register("password", {
                             required: 'パスワードは必須です',
-                            minLength: { value: 8, message: 'パスワードは8文字以上入力してください' }
+
                         })}
                     />
                     {errors.password && <p className={formStyles.form__error}>{errors.password.message}</p>}
