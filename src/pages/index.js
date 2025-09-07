@@ -38,7 +38,7 @@ export default function Home() {
 
     // fetchPosts実行
     fetchPosts();
-  }, []);
+  }, [router]);
 
   return (
     <>
@@ -53,9 +53,9 @@ export default function Home() {
         <Timeline setPosts={setPosts} />
 
         <div>
-          {posts && posts.map((item, index) => (
+          {posts && posts.map((item) => (
             <Post
-              key={index}
+              key={item.id}
               content={item.content}
               createdAt={item.createdAt}
               author={item.author}
